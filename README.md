@@ -1,2 +1,2 @@
 # movie-wiki
-Created with CodeSandbox
+Movie Wiki using react

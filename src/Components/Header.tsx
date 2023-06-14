@@ -1,18 +1,21 @@
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useMotionValueEvent,
+  useAnimation,
+} from "framer-motion";
 import { Link, useMatch } from "react-router-dom";
 import { useState } from "react";
 
-const Nav = styled.nav`
+const Nav = styled(motion.nav)`
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: fixed;
-  background-color: ${(props) => props.theme.black.darker};
   width: 100%;
   height: 80px;
   font-size: 16px;
-  color: white;
 `;
 
 const Col = styled.div`
@@ -98,16 +101,31 @@ const logoVariants = {
   },
 };
 
+const navVaiants = {
+  top: { backgroundColor: "rgba(0,0,0,0)" },
+  scroll: { backgroundColor: "#181818" },
+};
+
 const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { scrollY } = useScroll();
+  const navAnimation = useAnimation();
 
   const toggleIsSearch = () => setIsSearchOpen((prev) => !prev);
 
+  useMotionValueEvent(scrollY, "change", (y) => {
+    if (y < 80) {
+      navAnimation.start("top");
+    } else {
+      navAnimation.start("scroll");
+    }
+  });
+
   const homeMatch = useMatch("/");
-  const moviesMatch = useMatch("/tv");
+  const moviesMatch = useMatch("/moives");
 
   return (
-    <Nav>
+    <Nav variants={navVaiants} initial="top" animate={navAnimation}>
       <Col>
         <Logo
           variants={logoVariants}
@@ -126,7 +144,7 @@ const Header = () => {
             </Link>
           </Item>
           <Item>
-            <Link to="tv">
+            <Link to="moives">
               Movies {moviesMatch ? <Circle layoutId="circle" /> : null}
             </Link>
           </Item>
@@ -150,9 +168,9 @@ const Header = () => {
             ></path>
           </motion.svg>
           <Input
+            animate={{ scaleX: isSearchOpen ? 1 : 0 }}
             type="text"
             placeholder="Search for movies"
-            animate={{ scaleX: isSearchOpen ? 1 : 0 }}
             transition={{ type: "linear" }}
           />
         </Search>

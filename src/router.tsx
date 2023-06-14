@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "tv",
+        path: "moives",
         element: <Movies />,
       },
       {

@@ -1,4 +1,4 @@
-const Tv = () => {
+const Movies = () => {
   return (
     <div style={{ backgroundColor: "whitesmoke", height: "200vh" }}>
       <h1>Tv</h1>
@@ -6,4 +6,4 @@ const Tv = () => {
   );
 };
 
-export default Tv;
+export default Movies;

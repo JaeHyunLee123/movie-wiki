@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { Link, useMatch } from "react-router-dom";
+import { useState } from "react";
 
 const Nav = styled.nav`
   display: flex;
@@ -27,14 +28,17 @@ const Logo = styled(motion.svg)`
 `;
 
 const Search = styled.span`
+  display: flex;
+  align-items: center;
   color: ${(props) => props.theme.white.darker};
   margin: 0px 50px;
+  position: relative;
   svg {
     height: 25px;
   }
 `;
 
-const Circle = styled.span`
+const Circle = styled(motion.span)`
   position: absolute;
   width: 10px;
   height: 10px;
@@ -64,6 +68,19 @@ const Item = styled.li`
   }
 `;
 
+const Input = styled(motion.input)`
+  transform-origin: right;
+  position: absolute;
+  left: -200px;
+  height: 30px;
+  color: ${(props) => props.theme.white.lighter};
+  background-color: ${(props) => props.theme.black.darker};
+  border: solid 1px ${(props) => props.theme.white.lighter};
+  font-size: 20px;
+  padding-left: 30px;
+  width: 205px;
+`;
+
 const logoVariants = {
   normal: {
     fillOpacity: 1,
@@ -82,8 +99,12 @@ const logoVariants = {
 };
 
 const Header = () => {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  const toggleIsSearch = () => setIsSearchOpen((prev) => !prev);
+
   const homeMatch = useMatch("/");
-  const tvMatch = useMatch("/tv");
+  const moviesMatch = useMatch("/tv");
 
   return (
     <Nav>
@@ -100,16 +121,24 @@ const Header = () => {
         </Logo>
         <Items>
           <Item>
-            <Link to="">Home {homeMatch ? <Circle /> : null}</Link>
+            <Link to="">
+              Home {homeMatch ? <Circle layoutId="circle" /> : null}
+            </Link>
           </Item>
           <Item>
-            <Link to="tv">Tv Shows {tvMatch ? <Circle /> : null}</Link>
+            <Link to="tv">
+              Movies {moviesMatch ? <Circle layoutId="circle" /> : null}
+            </Link>
           </Item>
         </Items>
       </Col>
       <Col>
         <Search>
-          <svg
+          <motion.svg
+            style={{ zIndex: 1 }}
+            animate={{ x: isSearchOpen ? -195 : 20 }}
+            transition={{ type: "linear" }}
+            onClick={toggleIsSearch}
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +148,13 @@ const Header = () => {
               d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
               clipRule="evenodd"
             ></path>
-          </svg>
+          </motion.svg>
+          <Input
+            type="text"
+            placeholder="Search for movies"
+            animate={{ scaleX: isSearchOpen ? 1 : 0 }}
+            transition={{ type: "linear" }}
+          />
         </Search>
       </Col>
     </Nav>

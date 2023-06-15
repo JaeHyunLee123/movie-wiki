@@ -102,8 +102,8 @@ const logoVariants = {
 };
 
 const navVaiants = {
-  top: { backgroundColor: "rgba(0,0,0,0)" },
-  scroll: { backgroundColor: "#181818" },
+  top: { backgroundColor: "#181818" },
+  scroll: { backgroundColor: "rgba(0,0,0,0)" },
 };
 
 const Header = () => {

@@ -54,6 +54,10 @@ a{
   text-decoration: none;
   color:inherit;
 }
+body{
+  background-color: ${(props) => props.theme.black.veryDark};
+  color: ${(props) => props.theme.white.lighter};
+}
 `;
 
 const App = () => {
